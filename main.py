@@ -104,24 +104,13 @@ for grade in grades:
     grade = Course(grade[0], grade[1], grade[2], grade[3], grade[4], grade[5])
     grade_arr.append(grade)
 student.grades = grade_arr
-# print grade_arr
-# print student.calculate_GPA_per_dept("MATH")
-# for course in student.grades:
-#     print course.department + " " + course.course + ""
+
 student.calculate_GPA_all_depts()
 dept_list = student.calculate_GPA_all_depts()
 print type(dept_list)
 import pygal
 line_chart = pygal.Bar()
-# line_chart.title = 'Browser usage in February 2012 (in %)'
-# line_chart.add('IE', 19.5)
-# line_chart.add('Firefox', 36.6)
-# line_chart.add('Chrome', 36.3)
-# line_chart.add('Safari', 4.5)
-# line_chart.add('Opera', 2.3)
-# line_chart.render_to_file('bar_chart.svg')                          # Save the svg to a file
 
-# line_chart = pygal.Bar()
 for key in dept_list:
     if dept_list[key] > 0:
         line_chart.add(key, [dept_list[key]])
