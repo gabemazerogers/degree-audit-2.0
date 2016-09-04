@@ -1,13 +1,38 @@
 from bs4 import BeautifulSoup
+import scrap
 import re
-file = open("UCSD Degree Audit Report.htm", "r")
-html_doc = file.read()
+import getpass
+
+# file = open("UCSD Degree Audit Report.htm", "r")
+# html_doc = file.read()
+
+username = raw_input("Username").strip()
+password = getpass.getpass().strip()
+
+html_doc = scrap.get_html(username, password)
 
 soup = BeautifulSoup(html_doc, 'html.parser')
 spans = soup.find_all('span')
 span_arr = []
 for span in spans:
     span_arr.append(span.getText())
+
+    #TODO Get points from letter grade
+def get_points_from_grade(grade):
+    letters = {'A' : 4.0, 'B' : 3.0, 'C' : 2.0, 'D' : 1.0, 'F' : 0.0}
+    signs = {'+' : .3, '-' : -.3}
+    letter = grade[0]
+    if letter in letters:
+        if letter == 'F':
+            return 0.0
+        if grade == "A+":
+            return 4.0
+        if len(grade) == 1:
+            return letters[grade]
+        else:
+            return letters[grade[0]] + signs[grade[1]]
+    else:
+        return None
 
 class Person:
     grades = [];
@@ -52,25 +77,6 @@ class Person:
             dept_list[dept] = self.calculate_GPA_per_dept(dept)
         print dept_list
         return dept_list
-
-    #TODO Get points from letter grade
-def get_points_from_grade(grade):
-    letters = {'A' : 4.0, 'B' : 3.0, 'C' : 2.0, 'D' : 1.0, 'F' : 0.0}
-    signs = {'+' : .3, '-' : -.3}
-    letter = grade[0]
-    if letter in letters:
-        if letter == 'F':
-            return 0.0
-        if grade == "A+":
-            return 4.0
-        if len(grade) == 1:
-            return letters[grade]
-        else:
-            return letters[grade[0]] + signs[grade[1]]
-    else:
-        return None
-
-
 
 
 class Course:
