@@ -21,8 +21,8 @@ def setup():
 def build_student(span_arrray,html_doc):
     student = person.Person(span_array[3],span_array[5],span_array[7], span_array[9], span_array[11])
     student.grades = course.get_grade_arr(html_doc)
-    for grade in student.grades:
-        print grade.grade_to_json()
+    # for grade in student.grades:
+    #     print grade.grade_to_min_json()
     student.calculate_GPA_all_depts()
     return student 
 
@@ -30,7 +30,6 @@ def generate_grade_chart(student):
     dept_list = student.calculate_GPA_all_depts()
     import pygal
     line_chart = pygal.Bar()
-
     for key in dept_list:
         if dept_list[key] > 0:
             line_chart.add(key, [dept_list[key]])
@@ -39,4 +38,5 @@ def generate_grade_chart(student):
 
 span_array, html_doc = setup()
 student = build_student(span_array, html_doc)
+# print(student.to_json())
 generate_grade_chart(student)

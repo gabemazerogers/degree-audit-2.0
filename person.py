@@ -1,7 +1,8 @@
-import re
+import re, json, course
 
 class Person:
-    grades = [];
+
+
     def __init__(self, name, pid, college, overall_gpa, units):
         self.name = name
         self.pid = pid
@@ -10,12 +11,12 @@ class Person:
         self.units=units
         self.grades = []
 
+
     def calculate_GPA_per_dept(self, dept):
         filtered_grades = []
         for grade in self.grades:
             if grade.department == dept:
                 filtered_grades.append(grade)
-
         total_units = 0
         total_weighted_units = 0
         points = 0
@@ -28,10 +29,10 @@ class Person:
             total_units = total_units + float(grade.units)
             points = float(get_points_from_grade(grade.grade))
             total_weighted_units = total_weighted_units + (float(grade.units) * points)
-
         if total_units == 0:
             return 0
         return float(total_weighted_units) / float(total_units)
+
 
     def calculate_GPA_all_depts(self):
         dept_list = {}
@@ -41,6 +42,18 @@ class Person:
         for dept in dept_list:
             dept_list[dept] = self.calculate_GPA_per_dept(dept)
         return dept_list
+
+
+    def to_json(self):
+        outer_json = {}
+        grade_json = {}
+        for grade in self.grades:
+            course_name, course_json = grade.grade_to_min_json()
+            grade_json[course_name] = course_json
+        outer_json["name"] = self.name
+        outer_json["GPA"] = self.overall_gpa
+        outer_json["courses"] = grade_json
+        return sanitize_json(json.dumps(outer_json, ensure_ascii=True))
 
 
     #TODO Get points from letter grade
@@ -59,3 +72,10 @@ def get_points_from_grade(grade):
             return letters[grade[0]] + signs[grade[1]]
     else:
         return None
+
+def sanitize_json(to_clean):
+    to_clean = to_clean.replace("\\", "")
+    to_clean = to_clean.replace("\"{", "{")
+    to_clean = to_clean.replace("}\"", "}")
+    return to_clean
+

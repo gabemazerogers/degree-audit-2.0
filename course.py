@@ -1,6 +1,8 @@
 import re,json
 
 class Course:
+
+	
     def __init__(self, quarter, year, department, course, units, grade):
         self.quarter = quarter
         self.year = year
@@ -9,7 +11,8 @@ class Course:
         self.units = units
         self.grade = grade
 
-    def grade_to_json(self):
+
+    def grade_to_full_json(self):
     	temp_dict = {}
     	temp_dict["quarter"] = self.quarter
     	temp_dict["year"] = self.year
@@ -18,6 +21,16 @@ class Course:
     	temp_dict["units"] = self.units
     	temp_dict["grade"] = self.grade
     	return json.dumps(temp_dict)
+
+
+    def grade_to_min_json(self):
+    	temp_dict = {}
+    	course_name = "%s %s" % (self.department, self.course)
+    	temp_dict["course"] = course_name
+    	temp_dict["quarter"] = "%s%s" % (self.quarter, self.year)
+    	temp_dict["grade"] = self.grade
+    	temp_dict["units"] = self.units
+    	return course_name, json.dumps(temp_dict)
 
 
 
