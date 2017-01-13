@@ -17,7 +17,7 @@ class Auth(object):
 
     def on_get(self, req, resp, username, password):
         userID = main.main(param=True, username=username, password=password)
-        resp.body = '{"Auth Token": %s}' % userID
+        resp.body = '{"authToken": "%s"}' % userID
         resp.status = falcon.HTTP_200
 
 class Courses(object):
