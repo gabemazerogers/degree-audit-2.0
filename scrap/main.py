@@ -7,8 +7,33 @@ import course
 import redis
 import hashlib
 import time
+import socket
+import subprocess
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+REDIS_PORT = 6379
+HOST = 'localhost'
+DB_FLAG = 0
+
+r = redis.Redis(host=HOST, port=REDIS_PORT, db=DB_FLAG)
+
+DEV = True
+
+def init():
+    if DEV:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex((HOST, REDIS_PORT))
+        sock.close()
+        if result is not 0:
+            subprocess.call(["redis-server"])
+            check_redis = subprocess.Popen(['redis-cli', 'ping'],
+                                           stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+            success, fail = check_redis.communicate()
+            if success:
+                print("Redis started successfully.")
+            elif fail:
+                raise Exception("Error starting Redis.")
+
 
 def setup(param=False, username="", password=""):
     if not param:
@@ -42,7 +67,7 @@ def generate_grade_chart(student):
 
 
 def main(param=False, username="", password=""):
-    span_array, html_doc,userID = setup(param, username, password)
+    span_array, html_doc, user_id = setup(param, username, password)
     student = build_student(span_array, html_doc)
-    r.set(userID, str(student.to_json_by_courses()))
-    return userID
+    r.set(user_id, str(student.to_json_by_courses()))
+    return user_id
