@@ -1,7 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.join(os.getcwd(), os.pardir), 'scrap')))
 import main
-
+import urllib
 import falcon
 import msgpack
 import uuid
@@ -16,6 +16,7 @@ class Auth(object):
         pass
 
     def on_get(self, req, resp, username, password):
+        password = urllib.unquote(password).decode('utf8') 
         userID = main.main(param=True, username=username, password=password)
         resp.body = '{"authToken": "%s"}' % userID
         resp.status = falcon.HTTP_200
