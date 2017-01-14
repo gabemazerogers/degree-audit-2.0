@@ -19765,6 +19765,9 @@
 	var AuthForm = __webpack_require__(160);
 	var Token = __webpack_require__(161);
 	var degreeAuditAuth = __webpack_require__(162);
+	var degreeAuditFetch = __webpack_require__(188);
+	var FetchForm = __webpack_require__(189);
+	var Courses = __webpack_require__(190);
 
 	var Auth = React.createClass({
 	    displayName: 'Auth',
@@ -19776,7 +19779,6 @@
 	    },
 	    handleAuth: function handleAuth(username, password) {
 	        var that = this;
-
 	        this.setState({
 	            isLoading: true
 	        });
@@ -19798,12 +19800,40 @@
 	            });
 	        });
 	    },
+	    handleFetch: function handleFetch(token) {
+	        var that = this;
+	        this.setState({
+	            isLoading: true
+	        });
+
+	        degreeAuditFetch.getCourses(token).then(function (degreeAuditJSON) {
+	            var parsedJSON = JSON.parse(degreeAuditJSON);
+	            var gpa = parsedJSON.GPA.toString();
+	            var courses = JSON.stringify(parsedJSON.courses);
+	            that.setState({
+	                isLoading: false,
+	                gpa: gpa,
+	                courses: courses
+	            });
+	        }, function (errorMessage) {
+	            alert(errorMessage);
+	            that.setState({
+	                isLoading: false,
+	                token: "",
+	                gpa: "",
+	                courses: ""
+	            });
+	        });
+	    },
+
 	    render: function render() {
 	        var _state = this.state,
 	            isLoading = _state.isLoading,
 	            username = _state.username,
 	            password = _state.password,
-	            token = _state.token;
+	            token = _state.token,
+	            courses = _state.courses,
+	            gpa = _state.gpa;
 
 
 	        function renderMessage() {
@@ -19813,8 +19843,26 @@
 	                    null,
 	                    'Fetching token...'
 	                );
-	            } else if (token) {
-	                return React.createElement(Token, { token: token });
+	            } else if (token && !(courses && gpa)) {
+	                return React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(Token, { token: token })
+	                );
+	            } else if (courses && gpa) {
+	                console.log(gpa);
+	                console.log(courses);
+	                return React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(Courses, { gpa: gpa, courses: courses })
+	                );
+	            } else {
+	                React.createElement(
+	                    'h1',
+	                    null,
+	                    'Hi'
+	                );
 	            }
 	        }
 
@@ -19822,6 +19870,7 @@
 	            'div',
 	            null,
 	            React.createElement(AuthForm, { onAuth: this.handleAuth }),
+	            React.createElement(FetchForm, { onFetch: this.handleFetch }),
 	            renderMessage()
 	        );
 	    }
@@ -19890,8 +19939,7 @@
 	            'h3',
 	            null,
 	            'Your API Token is ',
-	            token,
-	            '!'
+	            token
 	        );
 	    }
 	});
@@ -19914,7 +19962,7 @@
 	    getToken: function getToken(username, password) {
 	        var encodedUsername = encodeURIComponent(username);
 	        var encodedPassword = encodeURIComponent(password);
-	        var requestUrl = AUTH_URL + "/" + encodedUsername + "/" + encodedPassword;
+	        var requestUrl = AUTH_URL + "/" + encodedUsername + "/" + password;
 
 	        return axios.get(requestUrl).then(function (res) {
 	            return res.data.authToken;
@@ -21413,6 +21461,184 @@
 	  };
 	};
 
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var axios = __webpack_require__(163);
+
+	// const DEV_HOST = "http://localhost:8000";
+	var PROD_HOST = "http://138.68.27.99";
+	var COURSE_URL = PROD_HOST + "/courses";
+
+	module.exports = {
+	    getCourses: function getCourses(token) {
+	        var encodedToken = encodeURIComponent(token);
+	        var requestUrl = COURSE_URL + "/" + token + "//";
+
+	        return axios.get(requestUrl).then(function (res) {
+	            return JSON.stringify(res.data);
+	        }, function (res) {
+	            console.log("Error");
+	            console.log(res);
+	        });
+	    }
+	};
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var FetchForm = React.createClass({
+	    displayName: 'FetchForm',
+
+	    onFormSubmit: function onFormSubmit(e) {
+	        e.preventDefault();
+	        console.log(this.refs.tokenField.value);
+	        var token = this.refs.tokenField.value;
+
+	        if (token.length > 0) {
+	            this.refs.tokenField.value = '';
+	            this.props.onFetch(token);
+	        }
+	    },
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	                'form',
+	                { onSubmit: this.onFormSubmit },
+	                React.createElement('input', { type: 'text', placeholder: 'Enter your token from above', ref: 'tokenField' }),
+	                React.createElement(
+	                    'button',
+	                    null,
+	                    'Fetch'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FetchForm;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Course = __webpack_require__(191);
+	// var {Card, CardActions, CardHeader, CardText} = require('material-ui/Card');
+	// var FlatButton = require('material-ui/FlatButton');
+
+
+	var Courses = React.createClass({
+	    displayName: 'Courses',
+
+	    render: function render() {
+	        var SPLIT_CHAR = '@';
+	        var _props = this.props,
+	            courses = _props.courses,
+	            gpa = _props.gpa;
+
+
+	        var courseArray = stringToArray(courses, SPLIT_CHAR);
+	        var courseArrayJSON = courseArray.map(function (courseString) {
+	            return JSON.parse(courseString);
+	        });
+
+	        //TODO: Implement a better way of displaying the grades.
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	                'h3',
+	                null,
+	                gpa.toString()
+	            ),
+	            courseArrayJSON.map(function (object, i) {
+	                return React.createElement(Course, { grade: object.grade,
+	                    course: object.course,
+	                    units: object.units,
+	                    quarter: object.quarter,
+	                    key: i });
+	            })
+	        );
+	    }
+	});
+
+	module.exports = Courses;
+
+	/**
+	 * Seperates Array as a string input, and returns it as an Array
+	 */
+	function stringToArray(inString, SPLIT_CHAR) {
+	    var modifiedString = inString.substring(1, inString.length - 1);
+
+	    // Function from StackOverflow to have a replace all in string functionality
+	    String.prototype.replaceAll = function (search, replacement) {
+	        var target = this;
+	        return target.replace(new RegExp(search, 'g'), replacement);
+	    };
+
+	    modifiedString = modifiedString.replaceAll("},", '}' + SPLIT_CHAR);
+	    var splitString = modifiedString.split(SPLIT_CHAR);
+
+	    return splitString;
+	}
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Course = React.createClass({
+	    displayName: 'Course',
+
+	    render: function render() {
+	        var _props = this.props,
+	            grade = _props.grade,
+	            course = _props.course,
+	            units = _props.units,
+	            quarter = _props.quarter;
+
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	                'h3',
+	                null,
+	                React.createElement(
+	                    'span',
+	                    null,
+	                    'Grade: ',
+	                    grade,
+	                    ', Course: ',
+	                    course,
+	                    ', Units: ',
+	                    units,
+	                    ', Quarter: ',
+	                    quarter
+	                ),
+	                ' '
+	            )
+	        );
+	    }
+	});
+
+	module.exports = Course;
 
 /***/ }
 /******/ ]);
