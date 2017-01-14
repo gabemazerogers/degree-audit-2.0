@@ -3,7 +3,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.join(os.getcwd(), os.par
 import main
 import urllib
 import falcon
-import msgpack
 import uuid
 import mimetypes
 import redis
