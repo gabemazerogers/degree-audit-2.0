@@ -17,7 +17,7 @@ var AuthForm = React.createClass({
             <div>
                 <form onSubmit={this.onFormSubmit}>
                     <input type="text" placeholder="PID" ref="username"/>
-                    <input type="password" ref="password"/>
+                    <input type="password" placeholder="Password" ref="password"/>
                     <button>Authenticate</button>
                 </form>
             </div>

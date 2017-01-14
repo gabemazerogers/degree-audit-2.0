@@ -1,7 +1,8 @@
 var axios = require('axios');
 
-const HOST = "http://localhost:8000"
-const AUTH_URL = `${HOST}/auth`;
+// const DEV_HOST = "http://localhost:8000";
+const PROD_HOST = "http://138.68.27.99";
+const AUTH_URL = `${PROD_HOST}/auth`;
 
 module.exports = {
     getToken: function(username, password) {
@@ -10,7 +11,6 @@ module.exports = {
         var requestUrl = `${AUTH_URL}/${encodedUsername}/${encodedPassword}`;
 
         return axios.get(requestUrl).then(function (res) {
-            console.log(res);
             return res.data.authToken;
         }, function (res) {
             console.log("Error");

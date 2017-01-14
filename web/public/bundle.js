@@ -19859,7 +19859,7 @@
 	                'form',
 	                { onSubmit: this.onFormSubmit },
 	                React.createElement('input', { type: 'text', placeholder: 'PID', ref: 'username' }),
-	                React.createElement('input', { type: 'password', ref: 'password' }),
+	                React.createElement('input', { type: 'password', placeholder: 'Password', ref: 'password' }),
 	                React.createElement(
 	                    'button',
 	                    null,
@@ -19906,8 +19906,9 @@
 
 	var axios = __webpack_require__(163);
 
-	var HOST = "http://localhost:8000";
-	var AUTH_URL = HOST + "/auth";
+	// const DEV_HOST = "http://localhost:8000";
+	var PROD_HOST = "http://138.68.27.99";
+	var AUTH_URL = PROD_HOST + "/auth";
 
 	module.exports = {
 	    getToken: function getToken(username, password) {
@@ -19916,7 +19917,6 @@
 	        var requestUrl = AUTH_URL + "/" + encodedUsername + "/" + encodedPassword;
 
 	        return axios.get(requestUrl).then(function (res) {
-	            console.log(res);
 	            return res.data.authToken;
 	        }, function (res) {
 	            console.log("Error");

@@ -8,6 +8,14 @@ Scraps UCSD's Degree Audit and parses information to JSON using Selenium, Phanto
 3. Write wrapper module for API and add to NPM
 3. Integrate CAPE data to front end, so users can see how well they do on average compared to class average
 
+## Running Application
+### API
+1. gunicorn app 
+
+### Web
+1. cd web
+2. npm start
+
 ## API Usage
 1. Obtain API Token through GET request at /auth/**{PID}**/**{PASSWORD}**
 2. Obtain courses through GET /courses/**{TOKEN}**// or GET /courses/**{TOKEN}**/quarter/
@@ -37,6 +45,7 @@ content-type: application/json; charset=UTF-8
 curl http://localhost:8000/courses/12345678912345678912345678912345//
 
 ```
+HTTP/1.1 200 OK
 Connection: close
 Date: Fri, 13 Jan 2017 19:06:59 GMT
 Server: gunicorn/19.6.0
@@ -55,3 +64,4 @@ content-type: application/json; charset=UTF-8
         ....
 }
 ```
+
