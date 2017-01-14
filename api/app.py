@@ -9,6 +9,7 @@ import requests
 
 ALLOWED_ORIGINS = ['http://localhost:3000', 'http://degree-audit-2.herokuapp.com']
 
+# Taken from: http://hpincket.com/falcon-framework-cors-for-no-access-control-allow-origin.html
 class CorsMiddleware(object):
 
     def process_request(self, request, response):
