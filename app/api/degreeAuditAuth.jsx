@@ -8,7 +8,7 @@ module.exports = {
     getToken: function(username, password) {
         var encodedUsername = encodeURIComponent(username);
         var encodedPassword = encodeURIComponent(password)
-        var requestUrl = `${AUTH_URL}/${encodedUsername}/${encodedPassword}`;
+        var requestUrl = `${AUTH_URL}/${encodedUsername}/${password}`;
 
         return axios.get(requestUrl).then(function (res) {
             return res.data.authToken;
