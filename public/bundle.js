@@ -44896,7 +44896,7 @@
 	            React.createElement(
 	                'form',
 	                { onSubmit: this.onFormSubmit },
-	                React.createElement('input', { type: 'text', placeholder: 'Enter your token from above', ref: 'tokenField' }),
+	                React.createElement('input', { type: 'text', placeholder: 'API Token', ref: 'tokenField' }),
 	                React.createElement(
 	                    'button',
 	                    null,

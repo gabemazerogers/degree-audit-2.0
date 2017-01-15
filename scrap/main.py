@@ -9,6 +9,7 @@ import hashlib
 import time
 import socket
 import subprocess
+import bcrypt
 
 REDIS_PORT = 6379
 HOST = 'localhost'
@@ -40,7 +41,7 @@ def setup(param=False, username="", password=""):
         username = raw_input("PID: ").strip()
         password = getpass.getpass().strip()
     userID = hashlib.md5((username+password).encode('utf-8')).hexdigest()
-    userID = hashlib.md5((userID+ str(time.time())).encode('utf-8')).hexdigest()
+    userID = hashlib.md5((userID + bcrypt.gensalt()).encode('utf-8')).hexdigest()
     html_doc = scrap.get_html(username, password)
     soup = BeautifulSoup(html_doc, 'html.parser')
     spans = soup.find_all('span')

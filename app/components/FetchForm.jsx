@@ -15,7 +15,7 @@ var FetchForm = React.createClass({
         return (
             <div>
                 <form onSubmit={this.onFormSubmit}>
-                    <input type="text" placeholder="Enter your token from above" ref="tokenField"/>
+                    <input type="text" placeholder="API Token" ref="tokenField"/>
                     <button>Fetch</button>
                 </form>
             </div>
