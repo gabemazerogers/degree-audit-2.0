@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Token = React.createClass({
+var TokenMessage = React.createClass({
     render: function () {
         var {token} = this.props;
         return (
@@ -9,4 +9,4 @@ var Token = React.createClass({
     }
 });
 
-module.exports = Token;
+module.exports = TokenMessage;

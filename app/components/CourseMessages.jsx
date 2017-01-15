@@ -1,10 +1,10 @@
 var React = require('react');
-var Course = require('Course');
+var CourseMessage = require('CourseMessage');
 // var {Card, CardActions, CardHeader, CardText} = require('material-ui/Card');
 // var FlatButton = require('material-ui/FlatButton');
 
 
-var Courses = React.createClass({
+var CourseMessages = React.createClass({
     render: function () {
         var SPLIT_CHAR = '@';
         var {courses, gpa} = this.props;
@@ -20,7 +20,7 @@ var Courses = React.createClass({
                 <h3>{gpa.toString()}</h3>
                     {courseArrayJSON.map(function(object, i){
                      return (
-                        <Course grade={object.grade} 
+                        <CourseMessage grade={object.grade} 
                                 course={object.course} 
                                 units={object.units} 
                                 quarter={object.quarter} 
@@ -32,7 +32,7 @@ var Courses = React.createClass({
     }
 });
 
-module.exports = Courses;
+module.exports = CourseMessages;
 
 /**
  * Seperates Array as a string input, and returns it as an Array

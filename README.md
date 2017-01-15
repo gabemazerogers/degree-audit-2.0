@@ -4,6 +4,7 @@ Scraps UCSD's Degree Audit and parses information to JSON using Selenium, Phanto
 
 ## TODO
 1. Integrate API with Frontend
+    - Decouple Auth complements into Main, Auth, Fetch, etc and have a router
     - Card View to show all of the courses
     - More intuitive menu
     - Handle tokens better

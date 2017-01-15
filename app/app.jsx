@@ -1,11 +1,16 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 var Auth = require('Auth');
+var Course = require('Course');
+var Main = require('Main');
 
 ReactDOM.render(
-  <div>
-   <h1>Degree Audit 2.0</h1>
-   <Auth/>
-  </div>,
+  <Router history={hashHistory}>
+    <Route path="/" component={Main}>
+      <Route path="token" component={Auth}/>
+      <IndexRoute component={Course}/>
+    </Route>
+  </Router>,
   document.getElementById('app')
 );

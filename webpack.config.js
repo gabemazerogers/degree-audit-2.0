@@ -11,10 +11,14 @@ module.exports = {
             Auth: 'app/components/Auth.jsx',
             AuthForm: 'app/components/AuthForm.jsx',
             Token: 'app/components/Token.jsx',
+            TokenMessage: 'app/components/TokenMessage.jsx',
             degreeAuditFetch: 'app/api/degreeAuditFetch.jsx',
             FetchForm: 'app/components/FetchForm.jsx',
-            Courses: 'app/components/Courses.jsx',
-            Course: 'app/components/Course.jsx'
+            Course: 'app/components/Course.jsx',
+            CourseMessages: 'app/components/CourseMessages.jsx',
+            CourseMessage: 'app/components/CourseMessage.jsx',
+            Main: 'app/components/Main.jsx',
+            Nav: 'app/components/Nav.jsx'
         },
         extensions: ['', '.js', '.jsx']
     },
