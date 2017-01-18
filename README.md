@@ -2,6 +2,8 @@
 
 Scraps UCSD's Degree Audit and parses information to JSON using Selenium, PhantomJS, BeautifulSoup, and Python. Plans to incorporate CAPE data.
 
+Currently available at http://ucsdcourse.info (excuse the **_very_** minimalistic UI)
+
 ## TODO
 1. Integrate API with Frontend
     - ~~Decouple Auth complements into Main, Auth, Fetch, etc and have a router~~
@@ -14,7 +16,8 @@ Scraps UCSD's Degree Audit and parses information to JSON using Selenium, Phanto
 
 ## Running Application
 ### API
-1. gunicorn app 
+1. cd api
+2. gunicorn app 
 
 ### Web
 1. cd web
